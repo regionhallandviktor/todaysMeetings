@@ -5,9 +5,8 @@ $(document).ready(function () {
         var snippet = "";
         var meetingrow = "";
 		$.each(result, function(index, row){
-			$.each(row, function(index, cell) {
-				meetingrow = meetingrow + "<p>" + cell + "</p>";
-			});
+			meetingrow = "<div class='meeting'><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
+			meetingrow = meetingrow + "<span class='desc'>" + row.Beskrivning + "</span>"+ "<span class='location'><strong>" + row.Plats + "</strong></span></div>";
 			snippet = snippet + meetingrow;
 			meetingrow = "";
 		});
