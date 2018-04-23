@@ -5,33 +5,80 @@
 <title>Dagens möten</title>
 <style>
 
-h1 {text-align: center;}
+h1 {
+	text-align: center;
+	font-size: 150%;
+	padding-top: 5em;
+}
+
 body {
 	background-color: #90AFC5;
 	font-size: 150%;
 	color: #2A3132;
-font-family: arial;}
-.meeting {
+	font-family: arial;
+}
+
+li:nth-child(even) {
+	background-color: white;
+	color: black;
+}
+
+li:nth-child(odd) { 
 	background-color: #336B87;
+}
+
+li:first-child {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+li:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+li { 
+	list-style-type: none;
+}
+
+.left {
+	float: left;
+	width: 30%;
+	height: 100%;
+}
+
+#meetingsContainer {
+	width: 70%;
+	float: right;
+}
+
+.meeting {	
+	
 	color: white;
 	padding:1ex;
-	margin-left: 2em;
-	margin-right: 2em;
-	margin-bottom: 1em;
 	border:1px solid #2A3132;;
-	border-radius: 0.5ex;
 	clear: both;}
+
 .time {margin-right:1em;}
+
 .desc {margin-right: 1em;}
-.location {float:right;}
-.location:before {content:"Lokal: ";}
+
+.location {
+	float:right;
+}
+
+.location:before {
+	content:"Lokal: ";}
+
 </style>
 </head>
 <body>
-
-<h1>Dagens möten</h1>
+<div>
+<div class="left">
+	<h1>Dagens möten</h1>
+</div>
 <div id="meetingsContainer"></div>
-
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/connector.js"></script>
 </body>
