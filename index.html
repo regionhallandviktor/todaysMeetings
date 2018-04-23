@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
 <meta charset="UTF-8">	
 <title>Dagens möten</title>
@@ -60,15 +60,18 @@ ul { border:15px white solid;
 }
 
 .meeting {	
-	
 	color: white;
 	padding:1ex;
 	border:1px solid white;
 	clear: both;}
 
-.time {margin-right:1em;}
+.time {
+	margin-right:1em;
+}
 
-.desc {margin-right: 1em;}
+.desc {
+	margin-right: 1em;
+}
 
 .location {
 	float:right;
@@ -86,12 +89,13 @@ ul { border:15px white solid;
 </style>
 </head>
 <body>
-<div>
-<div class="left">
-	<h1>Dagens möten</h1>
-</div>
-<div id="meetingsContainer"></div>
-</div>
+	<div>
+		<div class="left">
+			<h1>Dagens möten</h1>
+		</div>
+		<div id="meetingsContainer">
+		</div>
+	</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/connector.js"></script>
 </body>
