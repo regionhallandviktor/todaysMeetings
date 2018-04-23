@@ -14,11 +14,11 @@ $(document).ready(function () {
             row.Start = addMinutesClass(row.Start);
             row.Slut = addMinutesClass(row.Slut);
             meetingrow = "<li class='meeting'><div><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
-            meetingrow = meetingrow + "<span class='desc'>" + row.Beskrivning + "</span>"+ "<span class='location'>" + row.Plats + "</span></div></li>";
-            snippet = snippet + meetingrow;
+            meetingrow += "<span class='desc'>" + row.Beskrivning + "</span>"+ "<span class='location'>" + row.Plats + "</span></div></li>";
+            snippet += meetingrow;
             meetingrow = "";
         });
-        snippet = snippet + "</ul>";
+        snippet += "</ul>";
         $("#meetingsContainer").append(snippet);
     });
 });
