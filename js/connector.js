@@ -2,7 +2,9 @@
 
 function addMinutesClass(time) {
     time = time.toString();
-    return time.substring(0, 2) + "<span class='minutes'>" + time.substring(2, 4) + "</span>";
+    var minutes = time.substring(time.length - 2);
+    var hours = time.substring(0, time.length - 2);
+    return hours + "<span class='minutes'>" + minutes + "</span>";
 }
 
 function createMeetingsHTML(JSONdata) {
