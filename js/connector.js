@@ -7,7 +7,7 @@ function removeOldMeeting(indata) {
     var currentMinutes = currentTime.getMinutes();
     console.log(currentHours, currentMinutes);
     var time = "";
-    $.each(indata, function (index, row){
+    $.each(indata, function (index, row) {
         time = row.Slut.toString();
         var minutes = time.substring(time.length - 2);
         var hours = time.substring(0, time.length - 2);
@@ -70,9 +70,12 @@ $(document).ready(function () {
         renderMeetings(snippet);
         setInterval(function () {
             $.getJSON(reportUrl, function (result) {
+                if (getParameterByName("hidePreviousMeetings") === "true") {
+                    result = removeOldMeeting(result);
+                }
                 snippet = createMeetingsHTML(result);
                 renderMeetings(snippet);
             });
-        }, 60000);
+        }, 3000);
     });
 });
