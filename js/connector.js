@@ -80,5 +80,5 @@ $(document).ready(function () {
     updatePage();
     var refreshTimer = setInterval(function () {
         updatePage(refreshTimer);
-    }, 3000);
+    }, 60000);
 });
