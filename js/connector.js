@@ -14,7 +14,7 @@ function removeOldMeeting(indata) {
         if (Number(hours) > Number(currentHours)) {
             result.push(row);
         } else if (Number(hours) === Number(currentHours)) {
-            if  (Number(minutes) > Number(currentMinutes)) {
+            if (Number(minutes) > Number(currentMinutes)) {
                 result.push(row);
             }
         }
