@@ -11,8 +11,12 @@ function removeOldMeeting(indata) {
         time = row.Slut.toString();
         var minutes = time.substring(time.length - 2);
         var hours = time.substring(0, time.length - 2);
-        if (Number(hours) > Number(currentHours) || Number(minutes) > Number(currentMinutes)) {
+        if (Number(hours) > Number(currentHours)) {
             result.push(row);
+        } else if (Number(hours) === Number(currentHours)) {
+            if  (Number(minutes) > Number(currentMinutes)) {
+                result.push(row);
+            }
         }
     });
     return result;
