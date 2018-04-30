@@ -69,7 +69,8 @@ function updatePage(refreshTimer) {
         var snippet = createMeetingsHTML(result);
         renderMeetings(snippet);
         var time = new Date();
-        if (time.getHours() > 9) {
+        // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
+        if (time.getHours() > 15) {
             clearInterval(refreshTimer);
         }
     });
