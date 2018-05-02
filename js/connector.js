@@ -80,10 +80,10 @@ function updatePage(refreshTimer) {
             clearInterval(refreshTimer);
         }
     })
-    .fail(function(){
-        var errorMessage = "<ul><li class='meeting'>Något gick fel - möten kunde inte laddas. Kontakta intranätservice om felet kvarstår.</li></ul>";
-        renderMeetings(errorMessage);
-    });;
+        .fail(function () {
+            var errorMessage = "<ul><li class='meeting'>Något gick fel - möten kunde inte laddas. Kontakta intranätservice om felet kvarstår.</li></ul>";
+            renderMeetings(errorMessage);
+        });
 }
 
 $(document).ready(function () {
