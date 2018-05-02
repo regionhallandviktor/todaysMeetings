@@ -79,7 +79,11 @@ function updatePage(refreshTimer) {
         if (time.getHours() > 15) {
             clearInterval(refreshTimer);
         }
-    });
+    })
+    .fail(function(){
+        var errorMessage = "<ul><li class='meeting'>Något gick fel - möten kunde inte laddas. Kontakta intranätservice om felet kvarstår.</li></ul>";
+        renderMeetings(errorMessage);
+    });;
 }
 
 $(document).ready(function () {
