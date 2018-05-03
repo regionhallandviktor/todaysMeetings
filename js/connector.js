@@ -14,6 +14,7 @@ function removeOldMeeting(indata) {
     var currentTime = new Date();
     var currentHours = currentTime.getHours();
     var currentMinutes = currentTime.getMinutes();
+    console.log(currentHours, currentMinutes);
     var time = "";
     $.each(indata, function (index, row) {
         time = row.Slut.toString();
@@ -76,21 +77,19 @@ function renderStatus(message) {
     $("#statusfield").html(message);
 }
 
-function getTimestamp() {
-    var time = new Date(); 
-    var minutes = time.getMinutes();
-    minutes = minutes > 9 ? minutes : '0' + minutes;
-    return (time.getHours() + ":" + minutes)
-}
-
 function updatePage(refreshTimer) {
     renderStatus(config.messageloading);
     $.getJSON(config.reportUrl, function (result) {
+        var time = new Date();
+        var minutes = time.getMinutes();
+        minutes = minutes > 9
+            ? minutes
+            : "0" + minutes;
         if (getParameterByName("hidePreviousMeetings") === "true") {
             result = removeOldMeeting(result);
         }
         renderMeetings(createMeetingsHTML(result));
-        renderStatus(getTimestamp());
+        renderStatus(time.getHours() + ":" + minutes);
         // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
         if (time.getHours() > 15) {
             clearInterval(refreshTimer);
