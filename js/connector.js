@@ -80,12 +80,11 @@ function renderStatus(message) {
 function updatePage(refreshTimer) {
     renderStatus(config.messageloading);
     $.getJSON(config.reportUrl, function (result) {
+        var time = new Date();
         if (getParameterByName("hidePreviousMeetings") === "true") {
             result = removeOldMeeting(result);
         }
-        var snippet = createMeetingsHTML(result);
-        renderMeetings(snippet);
-        var time = new Date();
+        renderMeetings(createMeetingsHTML(result));
         renderStatus(time.getHours() + ":" + time.getMinutes());
         // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
         if (time.getHours() > 15) {
@@ -94,7 +93,7 @@ function updatePage(refreshTimer) {
         }
     })
         .fail(function () {
-            var errorMessage = "<ul><li class='meeting'>" + config.messageLoadError+ "</li></ul>";
+            var errorMessage = "<ul><li class='meeting'>" + config.messageLoadError + "</li></ul>";
             renderMeetings(errorMessage);
             renderStatus(config.messageStatusLoadError);
         });
