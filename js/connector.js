@@ -14,7 +14,6 @@ function removeOldMeeting(indata) {
     var currentTime = new Date();
     var currentHours = currentTime.getHours();
     var currentMinutes = currentTime.getMinutes();
-    console.log(currentHours, currentMinutes);
     var time = "";
     $.each(indata, function (index, row) {
         time = row.Slut.toString();
