@@ -64,10 +64,13 @@ function renderMeetings(htmlSnippet) {
     $("#meetingsContainer").html(htmlSnippet);
 }
 
+function renderStatus(message) {
+    $("#statusfield").html(message);
+}
+
 function updatePage(refreshTimer) {
     var reportUrl = "https://script.googleusercontent.com/macros/echo?user_content_key=sLZ5_UXKWkknzBykaAwONIVZftR6ab-COCbYHdoGmdHbgNVq-JETbhytClvm_Ia0uAioLpk1EenYdsLc3lmOFcdOwHi1gy8Em5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnPkmXcN78X7GNaRmWHhfpJJZ9UDB9jR0TZHzQmGtMoqSG5FSnj2YaWegAcovC2ObEWqreFRoDX_5&lib=MQv25UDfSmrECOrn40GdUGXfCTEkP8scq";
-    var loadingMessage = "<ul><li class='meeting'>Möten laddas...</li></ul>";
-    renderMeetings(loadingMessage);
+    renderStatus("Uppdatering pågår");
     $.getJSON(reportUrl, function (result) {
         if (getParameterByName("hidePreviousMeetings") === "true") {
             result = removeOldMeeting(result);
@@ -75,9 +78,11 @@ function updatePage(refreshTimer) {
         var snippet = createMeetingsHTML(result);
         renderMeetings(snippet);
         var time = new Date();
+        renderStatus(time.getHours() + ":" + time.getMinutes());
         // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
         if (time.getHours() > 15) {
             clearInterval(refreshTimer);
+            renderStatus("Uppdatering pausad - visar morgondagens möten efter midnatt");
         }
     })
         .fail(function () {

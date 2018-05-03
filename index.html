@@ -88,6 +88,16 @@ ul { border:15px white solid;
 	vertical-align: top;
 }
 
+#statuscontainer {
+    position: fixed;
+    right: 10px;
+    bottom: 5px;
+    margin: 0 auto;
+    color: white;
+    font-size: 20px;
+}
+
+
 </style>
 </head>
 <body>
@@ -116,6 +126,7 @@ ul { border:15px white solid;
 			</ul>
 		</div>
 	</div>
+	<div id="statuscontainer">Senast uppdaterad: <span id="statusfield">Inte laddat möten från servern.</span></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/connector.js"></script>
 </body>
