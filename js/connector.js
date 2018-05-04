@@ -56,10 +56,15 @@ function addMinutesClass(time) {
 function createMeetingsHTML(JSONdata) {
     var snippet = "<ul>";
     var meetingrow = "";
+    var dataTags = "";
     $.each(JSONdata, function (index, row) {
+        dataTags = "data-starttime='" + row.Start + "' ";
+        dataTags += "data-endtime='" + row.Slut + "' ";
+        dataTags += "data-description='" + row.Beskrivning + "' ";
+        dataTags += "data-location='" + row.Plats + "'";
         row.Start = addMinutesClass(row.Start);
         row.Slut = addMinutesClass(row.Slut);
-        meetingrow = "<li class='meeting'><div><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
+        meetingrow = "<li class='meeting'" + dataTags + "><div><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
         meetingrow += "<span class='desc'>" + row.Beskrivning + "</span>" + "<span class='location'>" + row.Plats + "</span></div></li>";
         snippet += meetingrow;
         meetingrow = "";
