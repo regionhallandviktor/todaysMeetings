@@ -6,5 +6,6 @@ var config = {
     messageloading: "Uppdatering pågår",
     messageUpdatesPaused: "Uppdatering pausad - visar morgondagens möten efter midnatt",
     messageLoadError: "Ajdå: möten kunde inte laddas. Sidan laddas om med någon minuts mellanrum, kontakta intranätservice om felet kvarstår.",
-    messageStatusLoadError: "Kunde inte hämta uppdateringar"
+    messageStatusLoadError: "Kunde inte hämta uppdateringar",
+    hourToStopUpdates: 17
 };
