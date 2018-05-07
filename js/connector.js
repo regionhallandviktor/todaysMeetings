@@ -52,7 +52,7 @@ function renderToMeetingsContainer(htmlSnippet) {
     $("#meetingsContainer").html(htmlSnippet);
 }
 
-function renderStatus(message) {
+function renderToStatusField(message) {
     $("#statusfield").html(message);
 }
 
@@ -90,7 +90,7 @@ function insertMeeting(row) {
 }
 
 function updatePage(refreshTimer) {
-    renderStatus(config.messageloading);
+    renderToStatusField(config.messageloading);
     $.getJSON(config.reportUrl, function (result) {
         var time = new Date();
         var minutes = time.getMinutes();
@@ -117,27 +117,26 @@ function updatePage(refreshTimer) {
             }
         });
 
-
         // Check all fetched meetings to see if any new should be added
         $.each(result, function (index, row) {
             hash = row.Start + row.Slut + row.Beskrivning + row.Plats;
             row.Hash = hash.hashCode();
-            if (!$("#" + row.Hash).length) {
+            if (!$("#" + row.Hash).length && row.Hash !== 0) {
                 insertMeeting(row);
             }
         });
 
-        renderStatus(time.getHours() + ":" + minutes);
+        renderToStatusField(time.getHours() + ":" + minutes);
         // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
         if (time.getHours() > config.hourToStopUpdates) {
             clearInterval(refreshTimer);
-            renderStatus(config.messageUpdatesPaused);
+            renderToStatusField(config.messageUpdatesPaused);
         }
     })
         .fail(function () {
             var errorMessage = "<ul><li class='meeting'>" + config.messageLoadError + "</li></ul>";
             renderToMeetingsContainer(errorMessage);
-            renderStatus(config.messageStatusLoadError);
+            renderToStatusField(config.messageStatusLoadError);
         });
 }
 
