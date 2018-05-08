@@ -1,15 +1,17 @@
 "use strict";
 
-function removeOldMeeting(indata) {
+function removeFinishedMeetingsFrom(JSONdata) {
     var result = [];
     var currentTime = new Date();
     var currentHours = currentTime.getHours();
     var currentMinutes = currentTime.getMinutes();
     var time = "";
-    $.each(indata, function (index, row) {
+    var minutes = "";
+    var hours = "";
+    $.each(JSONdata, function (index, row) {
         time = row.Slut.toString();
-        var minutes = time.substring(time.length - 2);
-        var hours = time.substring(0, time.length - 2);
+        minutes = time.substring(time.length - 2);
+        hours = time.substring(0, time.length - 2);
         if (Number(hours) > Number(currentHours)) {
             result.push(row);
         } else if (Number(hours) === Number(currentHours)) {
@@ -21,7 +23,7 @@ function removeOldMeeting(indata) {
     return result;
 }
 
-function addMinutesClass(time) {
+function addMinutesClassToString(time) {
     time = time.toString();
     var minutes = time.substring(time.length - 2);
     var hours = time.substring(0, time.length - 2);
@@ -37,8 +39,8 @@ function createMeetingsHTML(JSONdata) {
         dataTags += "data-endtime='" + row.Slut + "' ";
         dataTags += "data-description='" + row.Beskrivning + "' ";
         dataTags += "data-location='" + row.Plats + "'";
-        row.Start = addMinutesClass(row.Start);
-        row.Slut = addMinutesClass(row.Slut);
+        row.Start = addMinutesClassToString(row.Start);
+        row.Slut = addMinutesClassToString(row.Slut);
         meetingrow = "<li class='meeting'" + dataTags + " id='" + row.Hash + "'><div><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
         meetingrow += "<span class='desc'>" + row.Beskrivning + "</span>" + "<span class='location'>" + row.Plats + "</span></div></li>";
         snippet += meetingrow;
@@ -52,44 +54,44 @@ function renderToMeetingsContainer(htmlSnippet) {
     $("#meetingsContainer").html(htmlSnippet);
 }
 
-function renderToStatusField(message) {
-    $("#statusfield").html(message);
+function renderToStatusField(htmlSnippet) {
+    $("#statusfield").html(htmlSnippet);
 }
 
-function formatListItem(row) {
+function createListItemForMeeting(row) {
     var formatedLI = "";
     var dataTags = "data-starttime='" + row.Start + "' ";
     dataTags += "data-endtime='" + row.Slut + "' ";
     dataTags += "data-description='" + row.Beskrivning + "' ";
     dataTags += "data-location='" + row.Plats + "'";
-    row.Start = addMinutesClass(row.Start);
-    row.Slut = addMinutesClass(row.Slut);
+    row.Start = addMinutesClassToString(row.Start);
+    row.Slut = addMinutesClassToString(row.Slut);
     formatedLI = "<li class='meeting'" + dataTags + " id='" + row.Hash + "'><div><span class='time'>" + row.Start + " - " + row.Slut + "</span>";
     formatedLI += "<span class='desc'>" + row.Beskrivning + "</span>" + "<span class='location'>" + row.Plats + "</span></div></li>";
     return formatedLI;
 }
 
-function insertMeeting(row) {
+function insertMeeting(jsonItem) {
     var allMeetings = $(".meeting").toArray();
     var i = 0;
     var insertBefore = 0;
     if (allMeetings.length === 0) {
-        $(".meetingsList").append(formatListItem(row));
+        $(".meetingsList").append(createListItemForMeeting(jsonItem));
     } else {
         for (i = 0; i < allMeetings.length; i += 1) {
-            if (Number(allMeetings[i].dataset.starttime) > Number(row.Start) && insertBefore === 0) {
+            if (Number(allMeetings[i].dataset.starttime) > Number(jsonItem.Start) && insertBefore === 0) {
                 insertBefore = i;
             }
         }
         if (insertBefore !== 0) {
-            $(formatListItem(row)).insertBefore("#" + allMeetings[insertBefore].id);
+            $(createListItemForMeeting(jsonItem)).insertBefore("#" + allMeetings[insertBefore].id);
         } else {
-            $(".meetingsList").append(formatListItem(row));
+            $(".meetingsList").append(createListItemForMeeting(jsonItem));
         }
     }
 }
 
-function updatePage(refreshTimer) {
+function update() {
     renderToStatusField(config.messageloading);
     $.getJSON(config.reportUrl, function (result) {
         var time = new Date();
@@ -101,7 +103,7 @@ function updatePage(refreshTimer) {
             ? minutes
             : "0" + minutes;
         if (helpers.getParameterByName("hidePreviousMeetings") === "true") {
-            result = removeOldMeeting(result);
+            result = removeFinishedMeetingsFrom(result);
         }
 
         $.each(result, function (index, row) {
@@ -110,15 +112,15 @@ function updatePage(refreshTimer) {
             hashArrayOfNewData.push(id);
         });
 
-        // Check if any meeting in the page no longer exist in the source data and should be removed
+        // Remove meeting on page no longer present in source data
         $.each($(".meeting"), function (index, obj) {
             if (hashArrayOfNewData.indexOf(obj.id) === -1) {
                 $("#" + obj.id).remove();
             }
         });
 
-        // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
-        if (time.getHours() < config.hourToStopUpdates) {        // Check all fetched meetings to see if any new should be added
+        // Each fetch sorts google sheet. Stop so staff can add tomorrow meetings.
+        if (time.getHours() < config.hourToStopUpdates) {
             $.each(result, function (index, row) {
                 hash = row.Start + row.Slut + row.Beskrivning + row.Plats;
                 row.Hash = hash.hashCode();
@@ -140,8 +142,6 @@ function updatePage(refreshTimer) {
 }
 
 $(document).ready(function () {
-    updatePage();
-    var refreshTimer = setInterval(function () {
-        updatePage(refreshTimer);
-    }, config.refreshInterval);
+    update();
+    setInterval(update, config.refreshInterval);
 });
