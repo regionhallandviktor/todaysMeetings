@@ -117,21 +117,20 @@ function updatePage(refreshTimer) {
             }
         });
 
-        // Check all fetched meetings to see if any new should be added
-        $.each(result, function (index, row) {
-            hash = row.Start + row.Slut + row.Beskrivning + row.Plats;
-            row.Hash = hash.hashCode();
-            if (!$("#" + row.Hash).length && row.Hash !== 0) {
-                insertMeeting(row);
-            }
-        });
-
-        renderToStatusField(time.getHours() + ":" + minutes);
         // Running the script sorts the google sheet in place - annoying when adding new meetings so don't after 15 o clock
-        if (time.getHours() > config.hourToStopUpdates) {
-            clearInterval(refreshTimer);
+        if (time.getHours() < config.hourToStopUpdates) {        // Check all fetched meetings to see if any new should be added
+            $.each(result, function (index, row) {
+                hash = row.Start + row.Slut + row.Beskrivning + row.Plats;
+                row.Hash = hash.hashCode();
+                if (!$("#" + row.Hash).length && row.Hash !== 0) {
+                    insertMeeting(row);
+                }
+            });
+        } else {
             renderToStatusField(config.messageUpdatesPaused);
         }
+
+        renderToStatusField(time.getHours() + ":" + minutes);
     })
         .fail(function () {
             var errorMessage = "<ul><li class='meeting'>" + config.messageLoadError + "</li></ul>";
