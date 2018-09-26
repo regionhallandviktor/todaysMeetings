@@ -53,7 +53,7 @@ ul {
 #meetingsContainer {
 	width: 70%;
 	height: 90vh;
-	float: right;
+	margin: auto;
 }
 
 .meeting {	
